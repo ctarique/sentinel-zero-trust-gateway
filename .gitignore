@@ -1,0 +1,11 @@
+.DS_Store
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+
+# Security: Never track runtime telemetry or logs
+logs/
+
+# Local environment variables
+.env
