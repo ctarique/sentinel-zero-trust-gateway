@@ -109,3 +109,18 @@ This approach reduces the attack surface of the gateway and prevents unauthorize
 
 ## Notes
 ESP32 communication is local over USB (not affected by firewall rules)
+
+---
+
+## Phase 1.5: Zero-Trust Identity Enforcement (SSH Cryptographic Lockout)
+
+While the `nftables` configuration provides robust network-level micro-segmentation, true Zero-Trust requires identity-based enforcement at the application layer. 
+
+To eliminate the risk of credential brute-forcing and unauthorized lateral movement from within the trusted subnet, password authentication for the Raspberry Pi gateway has been completely disabled. 
+
+**Implementation Details:**
+* **Key Algorithm:** Ed25519 (chosen for its high security margin and performance efficiency).
+* **Access Boundary:** The private key is securely housed exclusively on the local administrative profile of the Zone 1 Workstation. 
+* **Enforcement:** The `sshd_config` on the Raspberry Pi is explicitly configured to reject all `PasswordAuthentication` and `PermitRootLogin`. 
+
+This ensures that even if an unauthorized device successfully spoofs an IP address within the trusted lab subnet, access to the Sentinel boundary remains cryptographically impossible without the physical workstation's private key.
