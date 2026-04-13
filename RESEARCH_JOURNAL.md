@@ -30,3 +30,24 @@ Resolve environment-specific deployment errors and ensure thread-safe hardware c
 ### Results & Artifacts
 - **Validation:** 100% data integrity achieved across 10 simultaneous threads.
 - **Proof:** ESP32-CAM returned `LED_ON_OK` responses with no stalls.
+
+---
+
+## [ENTRY 03] Multi-Endpoint Identity & Repository Sanitization (April 13, 2026)
+**Project Phase:** Phase 1: Infrastructure & Hardening
+
+### Daily Objective
+Establish unique cryptographic identities for management endpoints and implement a sanitization workflow for secure version control.
+
+### Experimental Log
+- **Identity Hardening:** Generated and deployed unique **Ed25519** key pairs for both the M1 MacBook Pro and the Windows workstation. 
+- **SSH Lockdown:** Successfully disabled password-based authentication. Identified and neutralized a configuration override in `/etc/ssh/sshd_config.d/50-cloud-init.conf` that was permitting password fallbacks.
+- **Client Automation:** Configured `~/.ssh/config` on both machines to map custom identity files and utilized the macOS Keychain (`UseKeychain yes`) for frictionless, passphrase-protected entry.
+- **Repository Sanitization:** Implemented a `.env` / `.env.example` architecture to decouple sensitive lab infrastructure data (SEMO IP ranges and administrative credentials) from the GitHub-hosted codebase.
+
+### Technical Challenges & Resolutions
+| Issue | Root Cause | Resolution |
+| :--- | :--- | :--- |
+| **SSH Timeout (Mac)** | Routing conflict in dual-homed setup | Manually assigned static IP **150.201.166.20** to Ethernet adapter; left gateway blank to isolate traffic. |
+| **Auth Persistence** | `cloud-init` drop-in configuration | Modified `50-cloud-init.conf` to explicitly set `PasswordAuthentication no`. |
+| **Git Push Rejection** | Remote/Local branch divergence | Performed a `git pull` to integrate remote changes (README/License) before finalizing the push. |
