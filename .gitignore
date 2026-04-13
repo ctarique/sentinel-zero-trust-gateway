@@ -15,3 +15,9 @@ logs/
 # Offline Payloads
 *.deb
 *.tar
+
+# SSH Keys (Safety Net)
+sentinel_admin
+sentinel_mac_admin
+sentinel_admin.pub
+sentinel_mac_admin.pub
