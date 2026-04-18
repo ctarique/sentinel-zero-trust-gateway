@@ -31,8 +31,6 @@ Resolve environment-specific deployment errors and ensure thread-safe hardware c
 - **Validation:** 100% data integrity achieved across 10 simultaneous threads.
 - **Proof:** ESP32-CAM returned `LED_ON_OK` responses with no stalls.
 
----
-
 ## [ENTRY 03] Multi-Endpoint Identity & Repository Sanitization (April 13, 2026)
 **Project Phase:** Phase 1: Infrastructure & Hardening
 
@@ -51,3 +49,37 @@ Establish unique cryptographic identities for management endpoints and implement
 | **SSH Timeout (Mac)** | Routing conflict in dual-homed setup | Manually assigned static IP **150.201.166.20** to Ethernet adapter; left gateway blank to isolate traffic. |
 | **Auth Persistence** | `cloud-init` drop-in configuration | Modified `50-cloud-init.conf` to explicitly set `PasswordAuthentication no`. |
 | **Git Push Rejection** | Remote/Local branch divergence | Performed a `git pull` to integrate remote changes (README/License) before finalizing the push. |
+
+## [ENTRY 03] Logical Isolation & Bare-Metal eBPF Optimization (April 18, 2026)
+**Project Phase:** Phase 2: Advanced Monitoring Transition
+
+### Daily Objective
+Formalize the architectural response to enterprise IT network restrictions and optimize the environment for Phase II kernel-level monitoring.
+
+### Experimental Log & Administrative Milestones
+- **IT Constraints Implemented:** Enterprise IT officially denied VPN, external RDP access, and DHCP reservations for the lab subnet. The gateway will operate on a dynamic DHCP lease.
+- **Bare-Metal Pivot:** Finalized the decision to run the Flask application as a native `systemd` service (`sentinel.service`) rather than using Docker. 
+- **Architectural Validation:** While Docker provides application isolation, it introduces severe complexity for eBPF tracing (requiring mapping container PID namespaces back to the host and filtering cgroup v2 traffic). Staying bare-metal eliminates this abstraction layer, allowing eBPF C code to hook directly into host-level syscalls.
+- **Committee Approval:** The committee approved the pivot. The architecture is now officially framed as a "secure bare-metal jump-node for logically isolated physical systems."
+
+### Next Immediate Action
+1. Configure `avahi-daemon` on the Raspberry Pi to enable mDNS (`.local` hostname routing) to mitigate the dynamic IP constraint.
+2. Install `bcc-tools` and `linux-headers` on the Pi to draft the first bare-metal kernel hooks for the USB serial translation layer.
+
+---
+
+## [ENTRY 04] Logical Isolation & Bare-Metal eBPF Optimization (April 18, 2026)
+**Project Phase:** Phase 2: Advanced Monitoring Transition
+
+### Daily Objective
+Formalize the architectural response to enterprise IT network restrictions and optimize the environment for Phase II kernel-level monitoring.
+
+### Experimental Log & Administrative Milestones
+- **IT Constraints Implemented:** Enterprise IT officially denied VPN, external RDP access, and DHCP reservations for the lab subnet. The gateway will operate on a dynamic DHCP lease.
+- **Bare-Metal Pivot:** Finalized the decision to run the Flask application as a native `systemd` service (`sentinel.service`) rather than using Docker. 
+- **Architectural Validation:** While Docker provides application isolation, it introduces severe complexity for eBPF tracing (requiring mapping container PID namespaces back to the host and filtering cgroup v2 traffic). Staying bare-metal eliminates this abstraction layer, allowing eBPF C code to hook directly into host-level syscalls.
+- **Committee Approval:** The committee approved the pivot. The architecture is now officially framed as a "secure bare-metal jump-node for logically isolated physical systems."
+
+### Next Immediate Action
+1. Configure `avahi-daemon` on the Raspberry Pi to enable mDNS (`.local` hostname routing) to mitigate the dynamic IP constraint.
+2. Install `bcc-tools` and `linux-headers` on the Pi to draft the first bare-metal kernel hooks for the USB serial translation layer.
