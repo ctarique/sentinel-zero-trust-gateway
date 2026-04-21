@@ -16,15 +16,6 @@ Raspberry Pi IP address
 Workstation IP address  
 <WORKSTATION_IP>
 
-Subnet mask  
-255.255.255.0
-
-Network range  
-<TRUSTED_SUBNET_RANGE>
-
-Gateway  
-<NETWORK_GATEWAY_IP>
-
 The subnet allows communication between devices in the range above.
 
 ---
@@ -56,15 +47,10 @@ All other inbound traffic is dropped.
 Location  
 /etc/nftables.conf
 
+Location  
+/etc/nftables.conf
+
 table inet filter {
-
-    # Trusted lab network allowed to access the gateway
-    set trusted_subnet {
-        type ipv4_addr
-        flags interval;
-        elements = { <TRUSTED_SUBNET_CIDR> }
-    }
-
     chain input {
         type filter hook input priority 0;
         policy drop;
@@ -73,8 +59,8 @@ table inet filter {
         iif "lo" accept;
         ct state established,related accept;
 
-        ip saddr @trusted_subnet icmp type echo-request accept;
-        ip saddr @trusted_subnet tcp dport { 22, 5000 } accept;
+        # Layer 2 HLAC: Allow SSH and Flask ONLY from approved physical workstations
+        ether saddr { 60:7d:09:b8:3f:77, 04:d4:c4:f3:33:ce } tcp dport { 22, 5000 } accept;
     }
 }
 ---
