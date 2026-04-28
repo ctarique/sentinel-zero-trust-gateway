@@ -1,3 +1,6 @@
+# Project Sentinel: Zero-Trust Edge Gateway Architecture
+
+```mermaid
 flowchart TD
     %% Global Apple-Engineering Styling
     classDef layer fill:#ffffff,stroke:#d2d2d7,stroke-width:1px,color:#1d1d1f,font-family:sans-serif;
@@ -66,8 +69,7 @@ flowchart TD
 
     class Management,Network,Gateway,Physical layer;
 
-
-Project Overview
+    Project Overview
 
 Sentinel is a hardened, zero-trust edge gateway designed to secure Cyber-Physical Systems (CPS) within a remote IoT laboratory. Operating within a highly restrictive university enterprise network, this architecture establishes an isolated command-and-control boundary between a shared student sandbox and autonomous edge nodes.
 
